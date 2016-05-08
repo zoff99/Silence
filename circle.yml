@@ -19,7 +19,7 @@ dependencies:
     - ~/.android
     - ~/.gradle
   override:
-    - echo "dummy"
+    - echo "dummy" 
   pre:
     - sudo apt-get update > /dev/null 2> /dev/null
     - sudo apt-get install xvfb > /dev/null 2> /dev/null
