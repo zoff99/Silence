@@ -53,9 +53,11 @@ dependencies:
 
     - pwd ; ls -al
 
-    - ./scripts/find-missing-strings.sh
-    - ./scripts/build-witness.sh
-    - ./gradlew connectedCheck -PdisablePreDex -PtaskThreads=1 -PandroidThread=1
+    #- ./scripts/find-missing-strings.sh
+    #- ./scripts/build-witness.sh
+    #- ./gradlew connectedCheck -PdisablePreDex -PtaskThreads=1 -PandroidThread=1
+    - git submodule init
+    - git submodule update
     - ./gradlew assembleDebug --stacktrace --info --no-daemon
     - find . -name '*.apk' ; exit 0
 
