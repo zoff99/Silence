@@ -54,9 +54,6 @@ dependencies:
 
     - pwd ; ls -al
 
-    #- ./scripts/find-missing-strings.sh
-    #- ./scripts/build-witness.sh
-    #- ./gradlew connectedCheck -PdisablePreDex -PtaskThreads=1 -PandroidThread=1
     - git submodule init
     - git submodule update
     - ./gradlew assembleDebug --stacktrace --info --no-daemon
@@ -106,10 +103,7 @@ test:
         parallel: true
     - circle-android wait-for-boot
 
-    - xdotool search --class ''|xargs -L1 xdotool getwindowname|grep -v '^$'; xwininfo -root -tree -int
     - sleep 210
-    - xdotool search --class ''|xargs -L1 xdotool getwindowname|grep -v '^$'; xwininfo -root -tree -int
-
     - adb shell input keyevent 82
 
     - sleep 10
@@ -128,6 +122,9 @@ test:
     - sleep 60 # let the emulator settle down first
 
     - fb-adb shell am start -n org.smssecure.smssecure/org.smssecure.smssecure.RoutingActivity
+    - sleep 60
+    - sleep 60
+    - sleep 60
     - sleep 60
 
     - died_count=`cat $CIRCLE_ARTIFACTS/adb_out.txt|grep 'Process. org.smssecure.smssecure, PID.'|wc -l|tr -d ' '` ; if [ $died_count -gt 0 ]; then echo "app crashed"; exit 1; fi
