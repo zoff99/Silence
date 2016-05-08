@@ -63,7 +63,7 @@ dependencies:
     - find . -name '*.apk' ; exit 0
 
     - mkdir -p app/build/outputs/apk/
-    - cp -v ./build/outputs/apk/Etar-Calendar-debug-unaligned.apk app/build/outputs/apk/app-debug-unaligned.apk
+    - cp -v ./build/outputs/apk/Silence-debug-unaligned.apk app/build/outputs/apk/app-debug-unaligned.apk
 
     - zip -d app/build/outputs/apk/app-debug-unaligned.apk META-INF/\*     # remove signature !!
     - cp -av app/build/outputs/apk/app-debug-unaligned.apk ~/app.apk ;
@@ -82,7 +82,7 @@ dependencies:
       ls -al ~/ ;
       pwd ;
       ls -al ;
-      cp -av app-signed-aligned.apk $CIRCLE_ARTIFACTS/etar_circleci_$CIRCLE_SHA1.apk || exit 1
+      cp -av app-signed-aligned.apk $CIRCLE_ARTIFACTS/silence_circleci_$CIRCLE_SHA1.apk || exit 1
 test:
   pre:
     - mksdcard -l e 180M sdcard.img
