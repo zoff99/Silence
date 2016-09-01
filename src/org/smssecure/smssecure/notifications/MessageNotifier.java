@@ -178,6 +178,7 @@ public class MessageNotifier {
           (pushCursor == null || pushCursor.isAfterLast()))
       {
         cancelNotification(context);
+        updateBadge(context, 0);
         clearReminder(context);
         return;
       }
@@ -189,6 +190,8 @@ public class MessageNotifier {
       } else {
         sendSingleThreadNotification(context, masterSecret, notificationState, flags);
       }
+
+      updateBadge(context, notificationState.getMessageCount());
 
       if (newNotificationRequested(flags)) {
         scheduleReminder(context, reminderCount);
@@ -430,4 +433,31 @@ public class MessageNotifier {
       clearReminder(context);
     }
   }
+
+
+
+  private static void updateBadge(Context context, int count) {
+
+
+    try
+    {
+      // ---- update the widget if present ----
+      final Intent intent2 = new Intent();
+      intent2.setAction("com.zoffcc.applications.intent.action.CHANGE_BADGE");
+      intent2.putExtra("UNREAD_COUNT_NEW", count);
+      context.getApplicationContext().sendBroadcast(intent2);
+      // ---- update the widget if present ----
+    }
+    catch (Exception e)
+    {
+    }
+    catch (Throwable t)
+    {
+    }
+
+  }
+
+
+
+
 }
