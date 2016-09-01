@@ -39,6 +39,8 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.zoffcc.applications.CustomWidgetProvider;
+
 import org.smssecure.smssecure.ConversationActivity;
 import org.smssecure.smssecure.R;
 import org.smssecure.smssecure.crypto.MasterSecret;
@@ -443,7 +445,7 @@ public class MessageNotifier {
     {
       // ---- update the widget if present ----
       final Intent intent2 = new Intent();
-      intent2.setAction("com.zoffcc.applications.intent.action.CHANGE_BADGE");
+      intent2.setAction(CustomWidgetProvider.baseClass + ".CHANGE_BADGE");
       intent2.putExtra("UNREAD_COUNT_NEW", count);
       context.getApplicationContext().sendBroadcast(intent2);
       // ---- update the widget if present ----

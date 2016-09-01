@@ -21,7 +21,7 @@ public class BadgeWidgetIntentReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        if (intent.getAction().equals("com.zoffcc.applications.intent.action.CHANGE_BADGE"))
+        if (intent.getAction().equals(CustomWidgetProvider.baseClass + ".CHANGE_BADGE"))
         {
             int unreadCountNew = intent.getIntExtra("UNREAD_COUNT_NEW", unreadCount);
             updateWidgetPictureAndButtonListener(context, unreadCountNew);

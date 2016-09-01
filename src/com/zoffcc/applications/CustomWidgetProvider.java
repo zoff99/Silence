@@ -16,27 +16,19 @@ import org.smssecure.smssecure.R;
 public class CustomWidgetProvider extends AppWidgetProvider
 {
 
+    // ---- CONFIG ----
+    // ---- CONFIG ----
+    // ---- CONFIG ----
     public static final int MAX_COUNT = 20;
     public static Class ToOpenActivity = org.smssecure.smssecure.ConversationListActivity.class;
+    public static String baseClass = "org.smssecure.smssecure";
+    // ---- CONFIG ----
+    // ---- CONFIG ----
+    // ---- CONFIG ----
 
     @Override
     public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
-        // ----------- DEBUG ------------
-        //        final Intent intent2 = new Intent();
-        //        intent2.setAction("com.zoffcc.applications.intent.action.CHANGE_BADGE");
-        //
-        //        final Handler handler = new Handler();
-        //        handler.postDelayed(new Runnable()
-        //        {
-        //            @Override
-        //            public void run()
-        //            {
-        //                context.sendBroadcast(intent2);
-        //            }
-        //        }, 3000);
-        // ----------- DEBUG ------------
-
         for (int widgetId : appWidgetIds)
         {
             Intent intent = new Intent(context, ToOpenActivity);
