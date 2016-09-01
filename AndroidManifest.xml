@@ -43,7 +43,34 @@
                  android:allowBackup="false"
                  android:theme="@style/Silence.LightTheme">
 
-    <meta-data android:name="org.smssecure.smssecure.mms.SilenceGlideModule"
+
+        <receiver android:name="com.zoffcc.applications.CustomWidgetProvider"
+                  android:icon="@drawable/icon"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/badge_widget_provider"/>
+        </receiver>
+
+
+
+        <receiver
+            android:name="com.zoffcc.applications.BadgeWidgetIntentReceiver"
+            android:label="widgetBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.zoffcc.applications.intent.action.CHANGE_BADGE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/badge_widget_provider" />
+        </receiver>
+
+
+        <meta-data android:name="org.smssecure.smssecure.mms.SilenceGlideModule"
                android:value="GlideModule" />
 
     <activity android:name=".CountrySelectionActivity"
