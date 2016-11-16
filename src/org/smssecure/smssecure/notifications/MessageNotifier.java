@@ -53,6 +53,7 @@ import org.smssecure.smssecure.recipients.Recipient;
 import org.smssecure.smssecure.recipients.RecipientFactory;
 import org.smssecure.smssecure.recipients.Recipients;
 import org.smssecure.smssecure.service.KeyCachingService;
+import org.smssecure.smssecure.util.ServiceUtil;
 import org.smssecure.smssecure.util.SpanUtil;
 import org.smssecure.smssecure.util.SilencePreferences;
 
@@ -131,19 +132,35 @@ public class MessageNotifier {
     }
   }
 
-  public static void updateNotificationWithFlags(Context context, MasterSecret masterSecret, int flags) {
+  public static void updateNotificationWithFlags(Context context, MasterSecret masterSecret, int flags, boolean vibrate) {
     if (!SilencePreferences.isNotificationsEnabled(context)) {
       return;
     }
 
-    updateNotification(context, masterSecret, flags, 0);
+    updateNotification(context, masterSecret, flags, 0, vibrate);
+  }
+
+  public static void updateNotificationWithFlags(Context context, MasterSecret masterSecret, int flags) {
+    updateNotificationWithFlags(context, masterSecret, flags, false);
+  }
+
+  public static void updateNotification(Context context, MasterSecret masterSecret, boolean vibrate) {
+    updateNotificationWithFlags(context, masterSecret, MNF_LIGHTS_KEEP, vibrate);
   }
 
   public static void updateNotification(Context context, MasterSecret masterSecret) {
-    updateNotificationWithFlags(context, masterSecret, MNF_LIGHTS_KEEP);
+    updateNotificationWithFlags(context, masterSecret, MNF_LIGHTS_KEEP, false);
   }
 
   public static void updateNotification(Context context, MasterSecret masterSecret, long threadId) {
+    updateNotification(context, masterSecret, threadId, false);
+  }
+
+  public static void updateNotification(Context context, MasterSecret masterSecret, long threadId, boolean vibrate) {
+    updateNotification(context, masterSecret, MNF_DEFAULTS, threadId, vibrate);
+  }
+
+  public static void updateNotification(Context context, MasterSecret masterSecret, int flags, long threadId, boolean vibrate) {
     boolean    isVisible  = visibleThread == threadId;
 
     ThreadDatabase threads    = DatabaseFactory.getThreadDatabase(context);
@@ -163,11 +180,11 @@ public class MessageNotifier {
     if (isVisible) {
       sendInThreadNotification(context, threads.getRecipientsForThreadId(threadId));
     } else {
-      updateNotification(context, masterSecret, MNF_DEFAULTS, 0);
+      updateNotification(context, masterSecret, flags, 0, vibrate);
     }
   }
 
-  private static void updateNotification(Context context, MasterSecret masterSecret, int flags, int reminderCount) {
+  private static void updateNotification(Context context, MasterSecret masterSecret, int flags, int reminderCount, boolean vibrate) {
     Cursor telcoCursor = null;
     Cursor pushCursor  = null;
 
@@ -185,9 +202,9 @@ public class MessageNotifier {
       NotificationState notificationState = constructNotificationState(context, masterSecret, telcoCursor);
 
       if (notificationState.hasMultipleThreads()) {
-        sendMultipleThreadNotification(context, notificationState, flags);
+        sendMultipleThreadNotification(context, notificationState, flags, vibrate);
       } else {
-        sendSingleThreadNotification(context, masterSecret, notificationState, flags);
+        sendSingleThreadNotification(context, masterSecret, notificationState, flags, vibrate);
       }
 
       if (newNotificationRequested(flags)) {
@@ -214,7 +231,8 @@ public class MessageNotifier {
   private static void sendSingleThreadNotification(Context context,
                                                    MasterSecret masterSecret,
                                                    NotificationState notificationState,
-                                                   int flags)
+                                                   int flags,
+                                                   boolean vibrate)
   {
     if (notificationState.getNotifications().isEmpty()) {
       cancelNotification(context);
@@ -249,6 +267,7 @@ public class MessageNotifier {
     if (notificationsRequested(flags)) {
       triggerNotificationAlarms(builder, notificationState, flags);
 
+      if (vibrate) builder.setAudibleAlarms(notificationState.getRingtone(), notificationState.getVibrate());
       builder.setTicker(notifications.get(0).getIndividualRecipient(),
                         notifications.get(0).getText());
     }
@@ -259,7 +278,8 @@ public class MessageNotifier {
 
   private static void sendMultipleThreadNotification(Context context,
                                                      NotificationState notificationState,
-                                                     int flags)
+                                                     int flags,
+                                                     boolean vibrate)
   {
     MultipleRecipientNotificationBuilder builder       = new MultipleRecipientNotificationBuilder(context, SilencePreferences.getNotificationPrivacy(context));
     List<NotificationItem>               notifications = notificationState.getNotifications();
@@ -282,7 +302,9 @@ public class MessageNotifier {
     if (notificationsRequested(flags)) {
       triggerNotificationAlarms(builder, notificationState, flags);
 
-      builder.setTicker(notifications.get(0).getText());
+      if (vibrate) builder.setAudibleAlarms(notificationState.getRingtone(), notificationState.getVibrate());
+      builder.setTicker(notifications.get(0).getIndividualRecipient(),
+                        notifications.get(0).getText());
     }
 
     ((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE))
@@ -290,7 +312,9 @@ public class MessageNotifier {
   }
 
   private static void sendInThreadNotification(Context context, Recipients recipients) {
-    if (!SilencePreferences.isInThreadNotifications(context)) {
+    if (!SilencePreferences.isInThreadNotifications(context) ||
+        ServiceUtil.getAudioManager(context).getRingerMode() != AudioManager.RINGER_MODE_NORMAL)
+    {
       return;
     }
 
@@ -413,7 +437,7 @@ public class MessageNotifier {
         protected Void doInBackground(Void... params) {
           MasterSecret masterSecret  = KeyCachingService.getMasterSecret(context);
           int          reminderCount = intent.getIntExtra("reminder_count", 0);
-          MessageNotifier.updateNotification(context, masterSecret, MNF_DEFAULTS, reminderCount + 1);
+          MessageNotifier.updateNotification(context, masterSecret, MNF_DEFAULTS, reminderCount + 1, false);
 
           return null;
         }
