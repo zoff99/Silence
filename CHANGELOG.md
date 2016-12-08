@@ -1,5 +1,12 @@
 # Silence Changelog
 
+### [0.14.6] - 2016-12-06
+- Fixed notifications when Silence is locked
+
+### [0.14.5] - 2016-12-04
+- Fixed notification lights with encrypted messages
+- Updated translations
+
 ### [0.14.4] - 2016-11-29
 - Fixed notifications with Android N
 - Prepared for upcoming XMPP transport
@@ -152,6 +159,7 @@
 - Changed app name
 - Removed non-free libraries
 
+ [0.14.5]: https://github.com/SilenceIM/Silence/compare/v0.14.4...v0.14.5
  [0.14.4]: https://github.com/SilenceIM/Silence/compare/v0.14.3...v0.14.4
  [0.14.3]: https://github.com/SilenceIM/Silence/compare/v0.14.2...v0.14.3
  [0.14.2]: https://github.com/SilenceIM/Silence/compare/v0.14.1...v0.14.2
