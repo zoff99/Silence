@@ -202,12 +202,12 @@ public class MessageNotifier {
         return;
       }
 
-      NotificationState notificationState = constructNotificationState(context, masterSecret, telcoCursor);
+      NotificationState notificationState = constructNotificationState(context, masterSecret, telcoCursor, vibrate);
 
       if (notificationState.hasMultipleThreads()) {
-        sendMultipleThreadNotification(context, notificationState, flags, vibrate);
+        sendMultipleThreadNotification(context, notificationState, flags);
       } else {
-        sendSingleThreadNotification(context, masterSecret, notificationState, flags, vibrate);
+        sendSingleThreadNotification(context, masterSecret, notificationState, flags);
       }
 
       updateBadge(context, notificationState.getMessageCount());
@@ -236,8 +236,7 @@ public class MessageNotifier {
   private static void sendSingleThreadNotification(Context context,
                                                    MasterSecret masterSecret,
                                                    NotificationState notificationState,
-                                                   int flags,
-                                                   boolean vibrate)
+                                                   int flags)
   {
     if (notificationState.getNotifications().isEmpty()) {
       cancelNotification(context);
@@ -272,7 +271,6 @@ public class MessageNotifier {
     if (notificationsRequested(flags)) {
       triggerNotificationAlarms(builder, notificationState, flags);
 
-      if (vibrate) builder.setAudibleAlarms(notificationState.getRingtone(), notificationState.getVibrate());
       builder.setTicker(notifications.get(0).getIndividualRecipient(),
                         notifications.get(0).getText());
     }
@@ -283,8 +281,7 @@ public class MessageNotifier {
 
   private static void sendMultipleThreadNotification(Context context,
                                                      NotificationState notificationState,
-                                                     int flags,
-                                                     boolean vibrate)
+                                                     int flags)
   {
     MultipleRecipientNotificationBuilder builder       = new MultipleRecipientNotificationBuilder(context, SilencePreferences.getNotificationPrivacy(context));
     List<NotificationItem>               notifications = notificationState.getNotifications();
@@ -307,7 +304,6 @@ public class MessageNotifier {
     if (notificationsRequested(flags)) {
       triggerNotificationAlarms(builder, notificationState, flags);
 
-      if (vibrate) builder.setAudibleAlarms(notificationState.getRingtone(), notificationState.getVibrate());
       builder.setTicker(notifications.get(0).getIndividualRecipient(),
                         notifications.get(0).getText());
     }
@@ -366,11 +362,14 @@ public class MessageNotifier {
 
   private static NotificationState constructNotificationState(Context context,
                                                               MasterSecret masterSecret,
-                                                              Cursor cursor)
+                                                              Cursor cursor,
+                                                              boolean vibrate)
   {
     NotificationState notificationState = new NotificationState();
     MessageRecord record;
     MmsSmsDatabase.Reader reader;
+
+    notificationState.setVibrate(vibrate);
 
     if (masterSecret == null) reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor);
     else                      reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor, masterSecret);
