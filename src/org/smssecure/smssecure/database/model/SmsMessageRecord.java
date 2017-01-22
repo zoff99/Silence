@@ -72,7 +72,7 @@ public class SmsMessageRecord extends MessageRecord {
     } else if (isInvalidVersionKeyExchange()) {
       return emphasisAdded(context.getString(R.string.SmsMessageRecord_received_key_exchange_message_for_invalid_protocol_version));
     } else if (isXmppExchange()) {
-      return emphasisAdded(context.getString(R.string.ConversationItem_xmpp_address));
+      return emphasisAdded(context.getString(R.string.ConversationItem_xmpp_address_update_silence));
     } else if (MmsSmsColumns.Types.isLegacyType(type)) {
       return emphasisAdded(context.getString(R.string.MessageRecord_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported));
     } else if (isBundleKeyExchange()) {
@@ -83,7 +83,7 @@ public class SmsMessageRecord extends MessageRecord {
       return new SpannableString("");
     } else if (isKeyExchange() && !isOutgoing()) {
       return emphasisAdded(context.getString(R.string.ConversationItem_received_key_exchange_message_tap_to_process));
-    } else if (SmsDatabase.Types.isDuplicateMessageType(type)) {
+    } else if (isDuplicateMessageType()) {
       return emphasisAdded(context.getString(R.string.SmsMessageRecord_duplicate_message));
     } else if (SmsDatabase.Types.isDecryptInProgressType(type)) {
       return emphasisAdded(context.getString(R.string.MessageDisplayHelper_decrypting_please_wait));

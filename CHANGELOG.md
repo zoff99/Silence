@@ -1,5 +1,16 @@
 # Silence Changelog
 
+### [0.14.8] - 2016-12-30
+- Fixed emoji's support with Android <= 6.1
+- Updated emojis, added flags
+- Updated translations
+
+### [0.14.7] - 2016-12-28
+- Fixed issues with vibration of notifications when Silence is unlocked
+- Added button to send drafts from main screen
+- Updated emojis
+- Updated translations
+
 ### [0.14.6] - 2016-12-06
 - Fixed notifications when Silence is locked
 
@@ -159,6 +170,8 @@
 - Changed app name
 - Removed non-free libraries
 
+ [0.14.8]: https://github.com/SilenceIM/Silence/compare/v0.14.7...v0.14.8
+ [0.14.7]: https://github.com/SilenceIM/Silence/compare/v0.14.6...v0.14.7
  [0.14.6]: https://github.com/SilenceIM/Silence/compare/v0.14.5...v0.14.6
  [0.14.5]: https://github.com/SilenceIM/Silence/compare/v0.14.4...v0.14.5
  [0.14.4]: https://github.com/SilenceIM/Silence/compare/v0.14.3...v0.14.4

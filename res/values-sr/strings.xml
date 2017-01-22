@@ -77,7 +77,7 @@
   <string name="ConversationItem_unable_to_open_media">Нема апликације која може да отвори овај медијум.</string>
   <string name="ConversationItem_from_s">од %s</string>
   <string name="ConversationItem_to_s">за %s</string>
-  <string name="ConversationItem_xmpp_address">ИксМПП адреса. Надоградите Сајленс да бисте користили ову функционалност.</string>
+  <string name="ConversationItem_xmpp_address_update_silence">ИксМПП адреса. Надоградите Сајленс да бисте користили ову функционалност.</string>
   <!--ConversationActivity-->
   <string name="ConversationActivity_initiate_secure_session_question">Започети безбедну сесију?</string>
   <string name="ConversationActivity_initiate_secure_session_with_s_question">Започети безбедну сесију са %s?</string>
@@ -184,6 +184,11 @@
     <item quantity="few">%d преписке премештене у пријем</item>
     <item quantity="other">%d преписки премештено у пријем</item>
   </plurals>
+  <string name="ConversationListFragment_send_drafts">Пошаљи нацрте</string>
+  <string name="ConversationListFragment_this_will_send_drafts_of_selected_conversations">Слање нацрта изабраних преписки.</string>
+  <string name="ConversationListFragment_send">Пошаљи</string>
+  <string name="ConversationListFragment_sending">Шаљем</string>
+  <string name="ConversationListFragment_sending_selected_drafts">Шаљем изабране нацрте...</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">Порука размене кључева...</string>
   <!--ConversationListItemAction-->
@@ -677,6 +682,7 @@
   <!--conversation_list_batch-->
   <string name="conversation_list_batch__menu_delete_selected">Обриши изабрано</string>
   <string name="conversation_list_batch__menu_select_all">Изабери све</string>
+  <string name="conversation_list_batch__menu_send_drafts">Пошаљи изабране нацрте</string>
   <string name="conversation_list_batch_archive__menu_archive_selected">Архивирај изабрано</string>
   <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Деархивирај изабрано</string>
   <!--conversation_list-->

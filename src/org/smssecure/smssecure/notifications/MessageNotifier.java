@@ -39,7 +39,9 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.smssecure.smssecure.providers.BadgeWidgetProvider;
 import org.smssecure.smssecure.ConversationActivity;
+import org.smssecure.smssecure.ConversationListActivity;
 import org.smssecure.smssecure.R;
 import org.smssecure.smssecure.crypto.MasterSecret;
 import org.smssecure.smssecure.database.DatabaseFactory;
@@ -132,35 +134,19 @@ public class MessageNotifier {
     }
   }
 
-  public static void updateNotificationWithFlags(Context context, MasterSecret masterSecret, int flags, boolean vibrate) {
+  private static void updateNotificationWithFlags(Context context, MasterSecret masterSecret, int flags) {
     if (!SilencePreferences.isNotificationsEnabled(context)) {
       return;
     }
 
-    updateNotification(context, masterSecret, flags, 0, vibrate);
-  }
-
-  public static void updateNotificationWithFlags(Context context, MasterSecret masterSecret, int flags) {
-    updateNotificationWithFlags(context, masterSecret, flags, false);
-  }
-
-  public static void updateNotification(Context context, MasterSecret masterSecret, boolean vibrate) {
-    updateNotificationWithFlags(context, masterSecret, MNF_LIGHTS_KEEP, vibrate);
+    updateNotification(context, masterSecret, flags, 0);
   }
 
   public static void updateNotification(Context context, MasterSecret masterSecret) {
-    updateNotificationWithFlags(context, masterSecret, MNF_LIGHTS_KEEP, false);
+    updateNotificationWithFlags(context, masterSecret, MNF_LIGHTS_KEEP);
   }
 
   public static void updateNotification(Context context, MasterSecret masterSecret, long threadId) {
-    updateNotification(context, masterSecret, threadId, false);
-  }
-
-  public static void updateNotification(Context context, MasterSecret masterSecret, long threadId, boolean vibrate) {
-    updateNotification(context, masterSecret, MNF_DEFAULTS, threadId, vibrate);
-  }
-
-  public static void updateNotification(Context context, MasterSecret masterSecret, int flags, long threadId, boolean vibrate) {
     boolean    isVisible  = visibleThread == threadId;
 
     ThreadDatabase threads    = DatabaseFactory.getThreadDatabase(context);
@@ -180,11 +166,11 @@ public class MessageNotifier {
     if (isVisible) {
       sendInThreadNotification(context, threads.getRecipientsForThreadId(threadId));
     } else {
-      updateNotification(context, masterSecret, flags, 0, vibrate);
+      updateNotification(context, masterSecret, MNF_DEFAULTS, 0);
     }
   }
 
-  private static void updateNotification(Context context, MasterSecret masterSecret, int flags, int reminderCount, boolean vibrate) {
+  private static void updateNotification(Context context, MasterSecret masterSecret, int flags, int reminderCount) {
     Cursor telcoCursor = null;
     Cursor pushCursor  = null;
 
@@ -195,17 +181,20 @@ public class MessageNotifier {
           (pushCursor == null || pushCursor.isAfterLast()))
       {
         cancelNotification(context);
+        updateBadge(context, 0);
         clearReminder(context);
         return;
       }
 
-      NotificationState notificationState = constructNotificationState(context, masterSecret, telcoCursor, vibrate);
+      NotificationState notificationState = constructNotificationState(context, masterSecret, telcoCursor);
 
       if (notificationState.hasMultipleThreads()) {
         sendMultipleThreadNotification(context, notificationState, flags);
       } else {
         sendSingleThreadNotification(context, masterSecret, notificationState, flags);
       }
+
+      updateBadge(context, notificationState.getMessageCount());
 
       if (newNotificationRequested(flags)) {
         scheduleReminder(context, reminderCount);
@@ -357,14 +346,11 @@ public class MessageNotifier {
 
   private static NotificationState constructNotificationState(Context context,
                                                               MasterSecret masterSecret,
-                                                              Cursor cursor,
-                                                              boolean vibrate)
+                                                              Cursor cursor)
   {
     NotificationState notificationState = new NotificationState();
     MessageRecord record;
     MmsSmsDatabase.Reader reader;
-
-    notificationState.setVibrate(vibrate);
 
     if (masterSecret == null) reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor);
     else                      reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor, masterSecret);
@@ -436,7 +422,7 @@ public class MessageNotifier {
         protected Void doInBackground(Void... params) {
           MasterSecret masterSecret  = KeyCachingService.getMasterSecret(context);
           int          reminderCount = intent.getIntExtra("reminder_count", 0);
-          MessageNotifier.updateNotification(context, masterSecret, MNF_DEFAULTS, reminderCount + 1, false);
+          MessageNotifier.updateNotification(context, masterSecret, MNF_DEFAULTS, reminderCount + 1);
 
           return null;
         }
@@ -453,4 +439,9 @@ public class MessageNotifier {
       clearReminder(context);
     }
   }
+
+  private static void updateBadge(Context context, int count) {
+    BadgeWidgetProvider.getInstance(context, (Class) ConversationListActivity.class).updateBadge(count);
+  }
+
 }

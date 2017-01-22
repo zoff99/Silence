@@ -83,7 +83,7 @@
     <string name="ConversationItem_unable_to_open_media">Can\'t find an app able to open this media.</string>
     <string name="ConversationItem_from_s">from %s</string>
     <string name="ConversationItem_to_s">to %s</string>
-    <string name="ConversationItem_xmpp_address">XMPP address. Update Silence to enable this feature.</string>
+    <string name="ConversationItem_xmpp_address_update_silence">XMPP address. Update Silence to enable this feature.</string>
 
     <!-- ConversationActivity -->
     <string name="ConversationActivity_initiate_secure_session_question">Initiate secure session?</string>
@@ -183,6 +183,11 @@
         <item quantity="one">Moved conversation to inbox</item>
         <item quantity="other">Moved %d conversations to inbox</item>
     </plurals>
+    <string name="ConversationListFragment_send_drafts">Send drafts</string>
+    <string name="ConversationListFragment_this_will_send_drafts_of_selected_conversations">This will send drafts of selected conversations.</string>
+    <string name="ConversationListFragment_send">Send</string>
+    <string name="ConversationListFragment_sending">Sending</string>
+    <string name="ConversationListFragment_sending_selected_drafts">Sending selected drafts...</string>
 
     <!-- ConversationListItem -->
     <string name="ConversationListItem_key_exchange_message">Key exchange message...</string>
@@ -761,6 +766,7 @@
     <!-- conversation_list_batch -->
     <string name="conversation_list_batch__menu_delete_selected">Delete selected</string>
     <string name="conversation_list_batch__menu_select_all">Select all</string>
+    <string name="conversation_list_batch__menu_send_drafts">Send selected drafts</string>
     <string name="conversation_list_batch_archive__menu_archive_selected">Archive selected</string>
     <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Unarchive selected</string>
 
@@ -817,6 +823,7 @@
     <string name="text_secure_normal__menu_settings">Settings</string>
     <string name="text_secure_normal__menu_clear_passphrase">Lock</string>
     <string name="text_secure_normal__mark_all_as_read">Mark all read</string>
+    <string name="text_secure_normal__menu_archived_conversations">Archived conversations</string>
 
     <!-- reminder_header -->
     <string name="reminder_header_sms_default_title">Use as default SMS app?</string>

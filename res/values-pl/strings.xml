@@ -75,7 +75,7 @@ Uwaga, szyfrowanie wszystkich Twoich wiadomości i kluczy zostanie wyłączone. 
   <string name="ConversationItem_unable_to_open_media">Nie można odnaleźć aplikacji do otwarcia tego pliku multimedialnego.</string>
   <string name="ConversationItem_from_s">od %s</string>
   <string name="ConversationItem_to_s">do %s</string>
-  <string name="ConversationItem_xmpp_address">Adres XMPP. Zaktualizuj Silence aby uaktywnić tę funkcję.</string>
+  <string name="ConversationItem_xmpp_address_update_silence">Adres XMPP. Zaktualizuj Silence aby uaktywnić tę funkcję.</string>
   <!--ConversationActivity-->
   <string name="ConversationActivity_initiate_secure_session_question">Rozpocząć bezpieczną sesję?</string>
   <string name="ConversationActivity_initiate_secure_session_with_s_question">Rozpocząć bezpieczną sesję z %s?</string>
@@ -101,7 +101,7 @@ Uwaga, szyfrowanie wszystkich Twoich wiadomości i kluczy zostanie wyłączone. 
     <item quantity="few">%d uczestników</item>
     <item quantity="other">%d uczestników</item>
   </plurals>
-  <string name="ConversationActivity_saved_draft">Zapisane wersje robocze</string>
+  <string name="ConversationActivity_saved_draft">Zapisane szkice</string>
   <string name="ConversationActivity_invalid_recipient">Nieprawidłowy adresat!</string>
   <string name="ConversationActivity_calls_not_supported">Połączenia nie są obsługiwane</string>
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">Wygląda na to, że urządzenie nie wspiera wybierania numeru.</string>
@@ -188,6 +188,11 @@ Kontynuować?</item>
     <item quantity="few">Przeniesiono %d konwersacji do Odebranych.</item>
     <item quantity="other">Przeniesiono %d konwersacji do Odebranych.</item>
   </plurals>
+  <string name="ConversationListFragment_send_drafts">Wyślij szkice</string>
+  <string name="ConversationListFragment_this_will_send_drafts_of_selected_conversations">To wyśle zapisane szkice wybranych rozmów.</string>
+  <string name="ConversationListFragment_send">Wyślij</string>
+  <string name="ConversationListFragment_sending">Wysyłanie</string>
+  <string name="ConversationListFragment_sending_selected_drafts">Wysyłanie wybranych szkiców...</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">Wiadomość wymiany kluczy...</string>
   <!--ConversationListItemAction-->
@@ -670,6 +675,7 @@ Otrzymano wiadomość wymiany klucz dla niepoprawnej wersji protokołu.</string>
   <!--conversation_list_batch-->
   <string name="conversation_list_batch__menu_delete_selected">Usuń zaznaczone</string>
   <string name="conversation_list_batch__menu_select_all">Zaznacz wszystko</string>
+  <string name="conversation_list_batch__menu_send_drafts">Wyślij wybrane szkice</string>
   <string name="conversation_list_batch_archive__menu_archive_selected">Archiwizuj zaznaczone</string>
   <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Przenieś zaznaczone do Odebranych</string>
   <!--conversation_list-->
